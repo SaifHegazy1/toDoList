@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 
-// Create TodoContext to demonstrate useContext and avoid prop drilling
+
 const TodoContext = createContext();
 
-// Custom hook to demonstrate hooks concept and separation of concerns
 function useTodos() {
   const [todos, setTodos] = useState([
     { id: 1, text: "Make a logo bigger", completed: false },
@@ -12,7 +11,6 @@ function useTodos() {
     { id: 4, text: "Make a dinner", completed: false }
   ]);
 
-  // Using updater function form as shown in useState document
   const addTodo = (text) => {
     setTodos(prevTodos => [
       ...prevTodos,
@@ -35,7 +33,6 @@ function useTodos() {
   return { todos, addTodo, toggleTodo, deleteTodo };
 }
 
-// TodoProvider component to provide context
 function TodoProvider({ children }) {
   const todoMethods = useTodos();
 
@@ -46,13 +43,11 @@ function TodoProvider({ children }) {
   );
 }
 
-// AddTodoForm - demonstrates controlled components
 function AddTodoForm() {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const { addTodo } = useContext(TodoContext);
 
-  // Controlled component - input value managed by React state
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
     if (error && e.target.value.length >= 5) {
@@ -61,14 +56,13 @@ function AddTodoForm() {
   };
 
   const handleSubmit = () => {
-    // Validation - minimum 5 characters as shown in image
     if (inputValue.trim().length < 5) {
       setError('Task must be minimum 5 characters');
       return;
     }
 
     addTodo(inputValue.trim());
-    setInputValue(''); // Clear input after adding
+    setInputValue('');
   };
 
   const handleKeyPress = (e) => {
@@ -93,7 +87,7 @@ function AddTodoForm() {
   );
 }
 
-// TodoItem component
+
 function TodoItem({ todo }) {
   const { toggleTodo, deleteTodo } = useContext(TodoContext);
 
@@ -121,7 +115,7 @@ function TodoItem({ todo }) {
   );
 }
 
-// TodoList component
+
 function TodoList() {
   const { todos } = useContext(TodoContext);
 
@@ -138,17 +132,17 @@ function TodoList() {
   );
 }
 
-// Main App component
+
 export default function App() {
-  // useEffect to demonstrate side effects (could be used for localStorage)
+
   useEffect(() => {
     console.log('Todo App mounted!');
 
-    // Cleanup function (would run on unmount)
+
     return () => {
       console.log('Todo App would unmount!');
     };
-  }, []); // Empty dependency array - runs once on mount
+  }, []);
 
   return (
     <TodoProvider>
